@@ -1,4 +1,3 @@
-
 @import "tailwindcss";
 
 :root {
@@ -7,6 +6,7 @@
   --muted: #8a8c95;
   --line: rgba(255, 255, 255, 0.12);
   --accent: #67e8f9;
+  --accent-rgb: 103, 232, 249;
 }
 
 * {
@@ -48,6 +48,8 @@ button {
   color: #08090a;
 }
 
+/* ---------- Header / Nav ---------- */
+
 .site-header {
   position: fixed;
   top: 0;
@@ -58,6 +60,8 @@ button {
 }
 
 .navbar {
+  position: relative;
+  isolation: isolate;
   width: 100%;
   max-width: 1500px;
   min-height: 58px;
@@ -67,6 +71,15 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+}
+
+/* Glass lives on a pseudo-element so the navbar itself has no filter.
+   A filter on .navbar would trap the dropdown's own backdrop blur. */
+.navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 18px;
   background: rgba(14, 15, 17, 0.76);
@@ -135,6 +148,8 @@ button {
   cursor: pointer;
 }
 
+/* ---------- Shell ---------- */
+
 .portfolio-shell {
   position: relative;
   overflow: clip;
@@ -177,8 +192,10 @@ button {
   flex: 0 0 7px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 12px rgba(103, 232, 249, 0.7);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.7);
 }
+
+/* ---------- Hero ---------- */
 
 .hero {
   min-height: 100svh;
@@ -222,7 +239,8 @@ button {
 .hero-title-mask {
   display: block;
   overflow: hidden;
-  padding: 0.02em 0 0.09em;
+  /* right padding stops tight negative tracking from clipping the last glyph */
+  padding: 0.02em 0.08em 0.09em 0;
 }
 
 .hero-title-line {
@@ -303,6 +321,8 @@ button {
   letter-spacing: 0.16em;
 }
 
+/* ---------- About ---------- */
+
 .about {
   padding-top: 145px;
   padding-bottom: 165px;
@@ -354,13 +374,22 @@ button {
   font-size: 11px;
 }
 
+/* ---------- Projects (horizontal scroll, cards centered) ---------- */
+
 .projects-section {
+  width: 100%;
   padding-top: 60px;
-  padding-bottom: 100px;
+  padding-bottom: 40px;
+  overflow: hidden;
+  /* Desktop: fill one screen so the pinned section is vertically centered */
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .projects-intro {
-  margin-bottom: 42px;
+  margin-bottom: 32px;
 }
 
 .section-title {
@@ -377,39 +406,39 @@ button {
   line-height: 1.8;
 }
 
-
-
+/* Each card is 50vw wide. Side padding of 25vw ( = (100vw - 50vw) / 2 )
+   centers the FIRST card at scroll start. Because the padding is symmetric,
+   translating the track by -(scrollWidth - innerWidth) centers the LAST card
+   at scroll end. */
 .projects-track {
   display: flex;
+  align-items: center;
   width: max-content;
-  gap: 8vw;
-  padding-inline: 10vw;
+  gap: 6vw;
+  padding-inline: 25vw;
   will-change: transform;
 }
 
 .project-card {
-  flex: 0 0 80vw;
-  width: 80vw;
+  flex: 0 0 50vw;
+  width: 50vw;
   min-width: 0;
 }
 
-@media (min-width: 900px) {
-  .projects-section {
-    overflow: hidden;
-  }
-}
-
-
 .project-art {
   position: relative;
+  display: grid;
+  place-items: center;
   width: 100%;
-  height: clamp(350px, 42vw, 560px);
+  height: clamp(240px, 26vw, 420px);
   overflow: hidden;
   isolation: isolate;
   background: #141518;
 }
 
 .project-image {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
@@ -435,7 +464,6 @@ button {
   );
 }
 
-
 .project-cyan {
   --project-color: #67e8f9;
 }
@@ -460,6 +488,7 @@ button {
   background: radial-gradient(ellipse at center, #513420, #171310 72%);
 }
 
+/* Decorative art: all items stack in the same grid cell, so they are centered */
 .art-grid {
   position: absolute;
   inset: 0;
@@ -473,7 +502,7 @@ button {
 }
 
 .art-orbit {
-  position: absolute;
+  grid-area: 1 / 1;
   width: 45%;
   aspect-ratio: 1;
   border: 1px solid color-mix(in srgb, var(--project-color) 65%, transparent);
@@ -497,6 +526,7 @@ button {
 }
 
 .art-crystal {
+  grid-area: 1 / 1;
   width: 18%;
   aspect-ratio: 0.8;
   background: linear-gradient(
@@ -512,8 +542,13 @@ button {
 }
 
 @keyframes crystal-float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-13px) rotate(5deg); }
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-13px) rotate(5deg);
+  }
 }
 
 .art-number,
@@ -539,7 +574,7 @@ button {
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
-  padding: 22px 0 30px;
+  padding: 22px 0 10px;
 }
 
 .project-category,
@@ -570,7 +605,7 @@ button {
 
 .horizontal-hint {
   width: min(90%, 1320px);
-  margin: 20px auto 0;
+  margin: 12px auto 0;
   color: #777983;
   font-size: 11px;
   letter-spacing: 0.1em;
@@ -579,6 +614,8 @@ button {
 .horizontal-hint span {
   color: var(--accent);
 }
+
+/* ---------- Skills ---------- */
 
 .skills {
   padding-top: 140px;
@@ -643,6 +680,8 @@ button {
   width: 70px;
 }
 
+/* ---------- Contact / Footer ---------- */
+
 .contact {
   padding-top: 120px;
   padding-bottom: 150px;
@@ -700,11 +739,7 @@ button {
   color: var(--accent);
 }
 
-@media (min-width: 900px) {
-  .projects-section {
-    overflow: hidden;
-  }
-}
+/* ---------- Mobile / tablet (single mobile block) ---------- */
 
 @media (max-width: 899px) {
   .site-header {
@@ -722,11 +757,12 @@ button {
     justify-content: center;
   }
 
+  /* Positioned against .navbar (position: relative) */
   .nav-links {
     position: absolute;
     top: calc(100% + 8px);
-    left: 15px;
-    right: 15px;
+    left: 0;
+    right: 0;
     display: none;
     align-items: stretch;
     flex-direction: column;
@@ -736,6 +772,7 @@ button {
     border-radius: 16px;
     background: rgba(10, 11, 13, 0.97);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
 
   .nav-links-open {
@@ -799,21 +836,26 @@ button {
     gap: 25px;
   }
 
+  /* Projects: stack vertically, no pin, no transform */
   .projects-section {
+    min-height: 0;
+    display: block;
     padding-top: 45px;
+    padding-bottom: 60px;
     overflow: visible;
   }
 
   .projects-track {
     width: 100%;
-    padding: 0 20px;
     flex-direction: column;
     gap: 22px;
+    padding-inline: 20px;
+    transform: none !important;
   }
 
   .project-card {
+    flex: none;
     width: 100%;
-    flex-basis: auto;
   }
 
   .project-art {

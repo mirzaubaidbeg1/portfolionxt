@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -21,6 +22,7 @@ const projects = [
   {
     number: "01",
     title: "Car Rental",
+    theme: "cyan",
     category: "Automotive · Web Design",
     year: "2026",
     image: "/projects/car-rental.jpg",
@@ -29,6 +31,7 @@ const projects = [
   {
     number: "02",
     title: "SEVAARO",
+    theme: "violet",
     category: "Business · Web Platform",
     year: "2026",
     image: "/projects/sevaaro.jpg",
@@ -36,11 +39,12 @@ const projects = [
   },
   {
     number: "03",
-    title: "Clothing Store",
+    title: "Fashion Store",
+    theme: "orange",
     category: "Fashion · E-commerce",
     year: "2026",
     image: "/projects/clothing.jpg",
-    description: "A clean shopping experience for a clothing brand.",
+    description: "A clean shopping experience for a fashion brand.",
   },
 ];
 
@@ -138,38 +142,46 @@ media.add("(min-width: 900px)", () => {
   const track = root.querySelector(".projects-track");
   const cards = gsap.utils.toArray(".project-card", track);
 
-  if (!section || !track || !cards.length) return;
+  if (!section || !track || cards.length === 0) return;
 
-  // Track ki original position reset karo.
-  gsap.set(track, { x: 0 });
+  const getCenterX = (card) => {
+    const trackRect = track.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
 
-  // Har card ko viewport ke center par lane ke liye
-  // required horizontal translation calculate karo.
-  const getCardX = (card) => {
-    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-    return window.innerWidth / 2 - cardCenter;
+    // Card center ko viewport center par lane wali distance
+    return (
+      window.innerWidth / 2 -
+      (cardRect.left - trackRect.left + cardRect.width / 2)
+    );
   };
 
-  const getStartX = () => getCardX(cards[0]);
-  const getEndX = () => getCardX(cards[cards.length - 1]);
+  const getFirstX = () => getCenterX(cards[0]);
+  const getLastX = () => getCenterX(cards[cards.length - 1]);
+
+  const horizontalDistance = () =>
+    Math.abs(getLastX() - getFirstX());
 
   gsap.fromTo(
     track,
-    { x: () => getStartX() },
+    { x: () => getFirstX() },
     {
-      x: () => getEndX(),
+      x: () => getLastX(),
       ease: "none",
       scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: () => `+=${Math.abs(getEndX() - getStartX())}`,
-        pin: true,
+        trigger: track,
+        start: "center center",
+        end: () => `+=${Math.max(horizontalDistance(), 1)}`,
+        pin: section,
         scrub: 1,
         anticipatePin: 1,
         invalidateOnRefresh: true,
       },
     }
   );
+
+  return () => {
+    gsap.set(track, { clearProps: "transform" });
+  };
 });
 
 
@@ -216,7 +228,7 @@ media.add("(min-width: 900px)", () => {
               <span className="hero-title-line">Mirza Ubaid</span>
             </span>
             <span className="hero-title-mask">
-              <span className="hero-title-line title-muted">Beg.</span>
+              <span className="hero-title-line title-muted">Beg</span>
             </span>
           </h1>
 
@@ -241,7 +253,7 @@ media.add("(min-width: 900px)", () => {
 
         {/* ABOUT */}
         <section id="about" className="about section-wrap">
-          <p className="eyebrow reveal">01 — A little about me</p>
+          <p className="eyebrow reveal"> — A little about me</p>
 
           <h2 className="about-heading reveal">
             I turn ambitious ideas into
@@ -268,7 +280,7 @@ media.add("(min-width: 900px)", () => {
         {/* PROJECTS */}
         <section id="projects" className="projects-section">
           <div className="projects-intro section-wrap">
-            <p className="eyebrow">02 — Selected work</p>
+            <p className="eyebrow"> — Selected work</p>
             <h2 className="section-title">
               Made with <span>intention.</span>
             </h2>
@@ -285,11 +297,12 @@ media.add("(min-width: 900px)", () => {
               >
                 
 <div className="project-art">
-  <img
+  <Image
     className="project-image"
     src={project.image}
     alt={`${project.title} website project`}
-    loading="lazy"
+    fill
+    sizes="(max-width: 899px) 100vw, 50vw"
   />
   <div className="project-image-overlay" />
   <span className="art-number">{project.number}</span>
@@ -316,7 +329,7 @@ media.add("(min-width: 900px)", () => {
 
         {/* SKILLS */}
         <section id="skills" className="skills section-wrap">
-          <p className="eyebrow reveal">03 — What I do</p>
+          <p className="eyebrow reveal"> — What I do</p>
           <h2 className="section-title reveal">
             Design meets <span>technology.</span>
           </h2>
@@ -342,7 +355,7 @@ media.add("(min-width: 900px)", () => {
 
         {/* CONTACT */}
         <section id="contact" className="contact section-wrap">
-          <p className="eyebrow reveal">04 — Have something in mind?</p>
+          <p className="eyebrow reveal">— Have something in mind?</p>
 
           <h2 className="contact-title reveal">
             Let&apos;s make

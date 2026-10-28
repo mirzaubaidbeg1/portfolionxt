@@ -41,7 +41,7 @@ export default function Navbar() {
 
           <a
             className="nav-cta"
-            href="mailto:hello@example.com"
+            href="mailto:begmirzaubaid1@gmail.com"
             onClick={closeMenu}
           >
             Let&apos;s talk <ArrowUpRight size={15} />
