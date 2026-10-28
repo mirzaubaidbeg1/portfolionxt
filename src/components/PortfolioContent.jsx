@@ -1,0 +1,378 @@
+
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Lenis from "lenis";
+import {
+  ArrowDown,
+  ArrowUpRight,
+  Code2,
+  Palette,
+  Sparkles,
+} from "lucide-react";
+import CrystalField from "@/components/CrystalField";
+
+gsap.registerPlugin(ScrollTrigger);
+
+
+const projects = [
+  {
+    number: "01",
+    title: "Car Rental",
+    category: "Automotive · Web Design",
+    year: "2026",
+    image: "/projects/car-rental.jpg",
+    description: "A modern car rental booking experience.",
+  },
+  {
+    number: "02",
+    title: "SEVAARO",
+    category: "Business · Web Platform",
+    year: "2026",
+    image: "/projects/sevaaro.jpg",
+    description: "A digital experience for the SEVAARO project.",
+  },
+  {
+    number: "03",
+    title: "Clothing Store",
+    category: "Fashion · E-commerce",
+    year: "2026",
+    image: "/projects/clothing.jpg",
+    description: "A clean shopping experience for a clothing brand.",
+  },
+];
+
+
+const skills = [
+  {
+    number: "01",
+    title: "Development",
+    detail: "React · Next.js · JavaScript · CSS",
+    icon: Code2,
+  },
+  {
+    number: "02",
+    title: "UI / UX Design",
+    detail: "Figma · Wireframes · Design Systems",
+    icon: Palette,
+  },
+  {
+    number: "03",
+    title: "Motion & Interaction",
+    detail: "GSAP · ScrollTrigger · Lenis",
+    icon: Sparkles,
+  },
+];
+
+export default function PortfolioContent() {
+  const rootRef = useRef(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const lenis = new Lenis({
+      duration: 1.15,
+      smoothWheel: true,
+      wheelMultiplier: 0.9,
+    });
+
+    const onLenisScroll = () => ScrollTrigger.update();
+    const onTick = (time) => lenis.raf(time * 1000);
+
+    lenis.on("scroll", onLenisScroll);
+    gsap.ticker.add(onTick);
+    gsap.ticker.lagSmoothing(0);
+
+    const ctx = gsap.context(() => {
+      gsap
+        .timeline({ defaults: { ease: "power3.out" } })
+        .from(".hero-eyebrow", {
+          y: 20,
+          opacity: 0,
+          duration: 0.7,
+        })
+        .from(
+          ".hero-title-line",
+          {
+            yPercent: 110,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.15,
+          },
+          "-=0.3"
+        )
+        .from(
+          ".hero-description, .hero-bottom-link",
+          {
+            y: 25,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15,
+          },
+          "-=0.4"
+        );
+
+      gsap.utils.toArray(".reveal").forEach((element) => {
+        gsap.from(element, {
+          y: 35,
+          opacity: 0,
+          duration: 0.85,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: element,
+            start: "top 86%",
+            once: true,
+          },
+        });
+      });
+
+      const media = gsap.matchMedia();
+
+     
+
+media.add("(min-width: 900px)", () => {
+  const section = root.querySelector("#projects");
+  const track = root.querySelector(".projects-track");
+  const cards = gsap.utils.toArray(".project-card", track);
+
+  if (!section || !track || !cards.length) return;
+
+  // Track ki original position reset karo.
+  gsap.set(track, { x: 0 });
+
+  // Har card ko viewport ke center par lane ke liye
+  // required horizontal translation calculate karo.
+  const getCardX = (card) => {
+    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+    return window.innerWidth / 2 - cardCenter;
+  };
+
+  const getStartX = () => getCardX(cards[0]);
+  const getEndX = () => getCardX(cards[cards.length - 1]);
+
+  gsap.fromTo(
+    track,
+    { x: () => getStartX() },
+    {
+      x: () => getEndX(),
+      ease: "none",
+      scrollTrigger: {
+        trigger: section,
+        start: "top top",
+        end: () => `+=${Math.abs(getEndX() - getStartX())}`,
+        pin: true,
+        scrub: 1,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      },
+    }
+  );
+});
+
+
+
+      media.add("(max-width: 899px)", () => {
+        gsap.set(root.querySelector(".projects-track"), {
+          clearProps: "transform",
+        });
+      });
+
+      return () => media.revert();
+    }, root);
+
+    const refreshId = window.setTimeout(
+      () => ScrollTrigger.refresh(),
+      300
+    );
+
+    return () => {
+      window.clearTimeout(refreshId);
+      ctx.revert();
+      gsap.ticker.remove(onTick);
+      lenis.off("scroll", onLenisScroll);
+      lenis.destroy();
+    };
+  }, []);
+
+  return (
+    <div ref={rootRef} className="portfolio-shell">
+      <CrystalField />
+
+      <main>
+        {/* HERO */}
+        <section id="home" className="hero section-wrap">
+          <div className="hero-glow" />
+
+          <p className="hero-eyebrow eyebrow">
+            <span className="live-dot" />
+            Independent Developer & Designer
+          </p>
+
+          <h1 className="hero-title">
+            <span className="hero-title-mask">
+              <span className="hero-title-line">Mirza Ubaid</span>
+            </span>
+            <span className="hero-title-mask">
+              <span className="hero-title-line title-muted">Beg.</span>
+            </span>
+          </h1>
+
+          <div className="hero-bottom">
+            <p className="hero-description">
+              I build distinctive digital experiences through thoughtful
+              design, creative code, and meaningful motion.
+            </p>
+
+            <a href="#projects" className="pill-link hero-bottom-link">
+              Explore selected work <ArrowUpRight size={17} />
+            </a>
+          </div>
+
+          <a href="#about" className="hero-scroll">
+            <span>Scroll to discover</span>
+            <ArrowDown size={15} />
+          </a>
+
+          <span className="hero-index">PORTFOLIO / 2026</span>
+        </section>
+
+        {/* ABOUT */}
+        <section id="about" className="about section-wrap">
+          <p className="eyebrow reveal">01 — A little about me</p>
+
+          <h2 className="about-heading reveal">
+            I turn ambitious ideas into
+            <span> thoughtful digital experiences.</span>
+          </h2>
+
+          <div className="about-bottom reveal">
+            <p>
+              I combine design sensibility with frontend development to
+              create interfaces that feel clear, immersive, and alive.
+              From the smallest detail to the overall experience, every
+              choice has a purpose.
+            </p>
+
+            <div className="about-tags">
+              <span>Design</span>
+              <span>Development</span>
+              <span>Interaction</span>
+              <span>Experimentation</span>
+            </div>
+          </div>
+        </section>
+
+        {/* PROJECTS */}
+        <section id="projects" className="projects-section">
+          <div className="projects-intro section-wrap">
+            <p className="eyebrow">02 — Selected work</p>
+            <h2 className="section-title">
+              Made with <span>intention.</span>
+            </h2>
+            <p className="projects-caption">
+              A collection of concepts and digital experiences.
+            </p>
+          </div>
+
+          <div className="projects-track">
+            {projects.map((project) => (
+              <article
+                className={`project-card project-${project.theme}`}
+                key={project.number}
+              >
+                
+<div className="project-art">
+  <img
+    className="project-image"
+    src={project.image}
+    alt={`${project.title} website project`}
+    loading="lazy"
+  />
+  <div className="project-image-overlay" />
+  <span className="art-number">{project.number}</span>
+  <span className="art-label">{project.category}</span>
+</div>
+
+
+                <div className="project-meta">
+                  <div>
+                    <p className="project-category">{project.category}</p>
+                    <h3>{project.title}</h3>
+                    <p className="project-description">{project.description}</p>
+                  </div>
+                  <span className="project-year">{project.year}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <p className="horizontal-hint">
+            Scroll to move through projects <span>→</span>
+          </p>
+        </section>
+
+        {/* SKILLS */}
+        <section id="skills" className="skills section-wrap">
+          <p className="eyebrow reveal">03 — What I do</p>
+          <h2 className="section-title reveal">
+            Design meets <span>technology.</span>
+          </h2>
+
+          <div className="skills-grid">
+            {skills.map((skill) => {
+              const Icon = skill.icon;
+
+              return (
+                <article className="skill-card reveal" key={skill.number}>
+                  <div className="skill-card-top">
+                    <span>{skill.number}</span>
+                    <Icon size={23} strokeWidth={1.5} />
+                  </div>
+                  <h3>{skill.title}</h3>
+                  <p>{skill.detail}</p>
+                  <span className="skill-line" />
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* CONTACT */}
+        <section id="contact" className="contact section-wrap">
+          <p className="eyebrow reveal">04 — Have something in mind?</p>
+
+          <h2 className="contact-title reveal">
+            Let&apos;s make
+            <br />
+            <span>something meaningful.</span>
+          </h2>
+
+          <p className="contact-description reveal">
+            Have a project, an idea, or just want to connect? My inbox is
+            open.
+          </p>
+
+          <a
+            href="mailto:begmirzaubaid1@gmail.com"
+            className="pill-link contact-button reveal"
+          >
+            Get in Touch<ArrowUpRight size={18} />
+          </a>
+        </section>
+
+        <footer className="footer">
+          <a href="#home" className="footer-logo">
+            M<span>.</span>
+          </a>
+          <p>© 2026 Mirza Ubaid Beg</p>
+          <a href="#home" className="footer-top">
+            Back to top ↑
+          </a>
+        </footer>
+      </main>
+    </div>
+  );
+}
