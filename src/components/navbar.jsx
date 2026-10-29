@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 
@@ -15,6 +15,48 @@ const links = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+
+  useEffect(() => {
+    const sections = links
+      .map(({ href }) => document.querySelector(href))
+      .filter(Boolean);
+    let animationFrame = 0;
+
+    const updateActiveSection = () => {
+      animationFrame = 0;
+      const marker = window.innerHeight * 0.38;
+      let currentSection = sections[0]?.id ?? "home";
+
+      sections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= marker) {
+          currentSection = section.id;
+        }
+      });
+
+      setActiveSection((current) =>
+        current === currentSection ? current : currentSection
+      );
+    };
+
+    const requestActiveSectionUpdate = () => {
+      if (!animationFrame) {
+        animationFrame = window.requestAnimationFrame(updateActiveSection);
+      }
+    };
+
+    requestActiveSectionUpdate();
+    window.addEventListener("scroll", requestActiveSectionUpdate, {
+      passive: true,
+    });
+    window.addEventListener("resize", requestActiveSectionUpdate);
+
+    return () => {
+      window.removeEventListener("scroll", requestActiveSectionUpdate);
+      window.removeEventListener("resize", requestActiveSectionUpdate);
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+    };
+  }, []);
 
   function closeMenu() {
     setMenuOpen(false);
@@ -37,16 +79,22 @@ export default function Navbar() {
         </a>
 
         <div className={`nav-links ${menuOpen ? "nav-links-open" : ""}`}>
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={closeMenu}
-              className="nav-link"
-            >
-              {link.label}
-            </a>
-          ))}
+          {links.map((link) => {
+            const sectionId = link.href.slice(1);
+            const isActive = activeSection === sectionId;
+
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={closeMenu}
+                className={`nav-link ${isActive ? "nav-link-active" : ""}`}
+                aria-current={isActive ? "location" : undefined}
+              >
+                {link.label}
+              </a>
+            );
+          })}
 
           <a
             className="nav-cta"

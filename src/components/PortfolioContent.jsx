@@ -60,6 +60,20 @@ function LinkedInMark({ size = 17 }) {
   );
 }
 
+function GitHubMark({ size = 17 }) {
+  return (
+    <svg
+      aria-hidden="true"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.56.1.76-.24.76-.54v-2.1c-3.09.67-3.74-1.31-3.74-1.31-.5-1.28-1.23-1.62-1.23-1.62-1-.69.08-.68.08-.68 1.1.08 1.68 1.13 1.68 1.13.98 1.67 2.56 1.19 3.18.91.1-.71.38-1.19.69-1.46-2.47-.28-5.07-1.23-5.07-5.48 0-1.21.43-2.2 1.13-2.97-.11-.28-.49-1.4.11-2.93 0 0 .92-.3 3.02 1.13a10.5 10.5 0 0 1 5.5 0c2.1-1.43 3.01-1.13 3.01-1.13.6 1.53.23 2.65.12 2.93.7.77 1.12 1.76 1.12 2.97 0 4.26-2.61 5.2-5.1 5.47.4.34.74 1.02.74 2.06v3.07c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z" />
+    </svg>
+  );
+}
+
 
 const projects = [
   {
@@ -434,16 +448,18 @@ export default function PortfolioContent() {
         </section>
 
         <footer className="footer">
-          <a href="#home" className="footer-logo" aria-label="Back to home">
-            <Image
-              src="/projects/vectorlogo.png"
-              alt=""
-              width={42}
-              height={42}
-              className="footer-logo-image"
-            />
-          </a>
-          <p>© 2026 Mirza Ubaid Beg</p>
+          <div className="footer-brand">
+            <a href="#home" className="footer-logo" aria-label="Back to top" title="Back to top">
+              <Image
+                src="/projects/vectorlogo.png"
+                alt=""
+                width={42}
+                height={42}
+                className="footer-logo-image"
+              />
+            </a>
+            <p>© 2026 Mirza Ubaid Beg</p>
+          </div>
           <nav className="footer-socials" aria-label="Social media and contact">
             <a
               href="https://www.instagram.com/mirza_ubaid_beg_/"
@@ -473,6 +489,15 @@ export default function PortfolioContent() {
               <LinkedInMark size={17} />
             </a>
             <a
+              href="https://github.com/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHub"
+              title="GitHub"
+            >
+              <GitHubMark size={17} />
+            </a>
+            <a
               href="mailto:begmirzaubaid1@gmail.com"
               aria-label="Email contact"
               title="Email"
@@ -480,9 +505,6 @@ export default function PortfolioContent() {
               <Mail size={17} strokeWidth={1.7} />
             </a>
           </nav>
-          <a href="#home" className="footer-top">
-            Back to top ↑
-          </a>
         </footer>
       </main>
     </div>

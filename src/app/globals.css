@@ -127,13 +127,37 @@ button {
 }
 
 .nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px solid transparent;
+  border-radius: 999px;
   color: #b2b3bb;
   font-size: 12px;
-  transition: color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .nav-link:hover {
   color: var(--accent);
+}
+
+.nav-link-active {
+  border-color: rgba(var(--accent-rgb), 0.26);
+  background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent);
+}
+
+.nav-link-active::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 9px rgba(var(--accent-rgb), 0.75);
 }
 
 .nav-cta {
@@ -733,6 +757,12 @@ button {
   font-size: 11px;
 }
 
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .footer-socials {
   display: flex;
   align-items: center;
@@ -762,14 +792,6 @@ button {
 
 .footer p {
   margin: 0;
-}
-
-.footer-top {
-  transition: color 0.2s ease;
-}
-
-.footer-top:hover {
-  color: var(--accent);
 }
 
 /* ---------- Mobile / tablet (single mobile block) ---------- */
@@ -813,9 +835,16 @@ button {
   }
 
   .nav-link {
-    padding: 15px 0;
+    justify-content: space-between;
+    padding: 14px 12px;
     border-bottom: 1px solid var(--line);
+    border-radius: 10px;
     font-size: 14px;
+  }
+
+  .nav-link-active {
+    border-color: rgba(var(--accent-rgb), 0.2);
+    background: rgba(var(--accent-rgb), 0.09);
   }
 
   .nav-cta {
@@ -1070,16 +1099,15 @@ button {
   }
 
   .footer {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: 8px;
-    padding: 14px 12px;
-    font-size: 9px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 16px 20px;
+    font-size: 10px;
   }
 
-  .footer-logo {
-    grid-column: 1;
-    grid-row: 1;
+  .footer-brand {
+    gap: 10px;
   }
 
   .footer-logo-image {
@@ -1088,10 +1116,9 @@ button {
   }
 
   .footer-socials {
-    grid-column: 2;
-    grid-row: 1;
+    align-self: center;
     justify-content: center;
-    gap: 4px;
+    gap: 7px;
   }
 
   .footer-socials a {
@@ -1099,17 +1126,7 @@ button {
     height: 32px;
   }
 
-  .footer-top {
-    grid-column: 3;
-    grid-row: 1;
-    justify-self: end;
-    font-size: 9px;
-    white-space: nowrap;
-  }
-
   .footer p {
-    grid-column: 1 / -1;
-    grid-row: 2;
     font-size: 9px;
   }
 }
