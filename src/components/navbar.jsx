@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 
 const links = [
@@ -23,7 +24,15 @@ export default function Navbar() {
     <header className="site-header">
       <nav className="navbar" aria-label="Main navigation">
         <a href="#home" className="nav-logo" onClick={closeMenu}>
-          <span className="logo-mark">M.</span>
+          <span className="logo-mark">
+            <Image
+              src="/projects/vectorlogo.png"
+              alt=""
+              width={36}
+              height={36}
+              className="nav-logo-image"
+            />
+          </span>
           <span>Mirza Ubaid Beg</span>
         </a>
 

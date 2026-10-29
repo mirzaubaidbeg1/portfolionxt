@@ -77,67 +77,81 @@ export default function PortfolioContent() {
     const root = rootRef.current;
     if (!root) return;
 
-    const lenis = new Lenis({
-      duration: 1.15,
-      smoothWheel: true,
-      wheelMultiplier: 0.9,
-    });
+    const canUseLenis = window.matchMedia(
+      "(pointer: fine) and (prefers-reduced-motion: no-preference)"
+    ).matches;
+    const lenis = canUseLenis
+      ? new Lenis({
+          duration: 1.05,
+          smoothWheel: true,
+          wheelMultiplier: 0.9,
+        })
+      : null;
 
     const onLenisScroll = () => ScrollTrigger.update();
-    const onTick = (time) => lenis.raf(time * 1000);
+    const onTick = (time) => lenis?.raf(time * 1000);
 
-    lenis.on("scroll", onLenisScroll);
-    gsap.ticker.add(onTick);
-    gsap.ticker.lagSmoothing(0);
+    if (lenis) {
+      lenis.on("scroll", onLenisScroll);
+      gsap.ticker.add(onTick);
+      gsap.ticker.lagSmoothing(0);
+    }
 
     const ctx = gsap.context(() => {
-      gsap
-        .timeline({ defaults: { ease: "power3.out" } })
-        .from(".hero-eyebrow", {
-          y: 20,
-          opacity: 0,
-          duration: 0.7,
-        })
-        .from(
-          ".hero-title-line",
-          {
-            yPercent: 110,
-            opacity: 0,
-            duration: 1,
-            stagger: 0.15,
-          },
-          "-=0.3"
-        )
-        .from(
-          ".hero-description, .hero-bottom-link",
-          {
-            y: 25,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.15,
-          },
-          "-=0.4"
-        );
+      const isMobile = window.matchMedia("(max-width: 899px)").matches;
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
 
-      gsap.utils.toArray(".reveal").forEach((element) => {
-        gsap.from(element, {
-          y: 35,
-          opacity: 0,
-          duration: 0.85,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: element,
-            start: "top 86%",
-            once: true,
-          },
+      if (!prefersReducedMotion) {
+        gsap
+          .timeline({ defaults: { ease: "power3.out" } })
+          .from(".hero-eyebrow", {
+            y: isMobile ? 12 : 20,
+            opacity: 0,
+            duration: isMobile ? 0.5 : 0.7,
+          })
+          .from(
+            ".hero-title-line",
+            {
+              yPercent: 110,
+              opacity: 0,
+              duration: isMobile ? 0.7 : 1,
+              stagger: isMobile ? 0.09 : 0.15,
+            },
+            "-=0.25"
+          )
+          .from(
+            ".hero-description, .hero-bottom-link",
+            {
+              y: isMobile ? 14 : 25,
+              opacity: 0,
+              duration: isMobile ? 0.55 : 0.8,
+              stagger: isMobile ? 0.1 : 0.15,
+            },
+            "-=0.3"
+          );
+
+        gsap.utils.toArray(".reveal").forEach((element) => {
+          gsap.from(element, {
+            y: isMobile ? 18 : 35,
+            opacity: 0,
+            duration: isMobile ? 0.6 : 0.85,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: element,
+              start: isMobile ? "top 91%" : "top 86%",
+              once: true,
+            },
+          });
         });
-      });
+      }
 
       const media = gsap.matchMedia();
 
      
 
-media.add("(min-width: 900px)", () => {
+media.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)", () => {
   const section = root.querySelector("#projects");
   const track = root.querySelector(".projects-track");
   const cards = gsap.utils.toArray(".project-card", track);
@@ -192,6 +206,27 @@ media.add("(min-width: 900px)", () => {
         });
       });
 
+      media.add(
+        "(max-width: 899px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          const cards = gsap.utils.toArray(".project-card", root);
+
+          cards.forEach((card) => {
+            gsap.from(card, {
+              y: 22,
+              opacity: 0,
+              duration: 0.65,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 90%",
+                once: true,
+              },
+            });
+          });
+        }
+      );
+
       return () => media.revert();
     }, root);
 
@@ -203,9 +238,11 @@ media.add("(min-width: 900px)", () => {
     return () => {
       window.clearTimeout(refreshId);
       ctx.revert();
-      gsap.ticker.remove(onTick);
-      lenis.off("scroll", onLenisScroll);
-      lenis.destroy();
+      if (lenis) {
+        gsap.ticker.remove(onTick);
+        lenis.off("scroll", onLenisScroll);
+        lenis.destroy();
+      }
     };
   }, []);
 
@@ -377,8 +414,14 @@ media.add("(min-width: 900px)", () => {
         </section>
 
         <footer className="footer">
-          <a href="#home" className="footer-logo">
-            M<span>.</span>
+          <a href="#home" className="footer-logo" aria-label="Back to home">
+            <Image
+              src="/projects/vectorlogo.png"
+              alt=""
+              width={42}
+              height={42}
+              className="footer-logo-image"
+            />
           </a>
           <p>© 2026 Mirza Ubaid Beg</p>
           <a href="#home" className="footer-top">

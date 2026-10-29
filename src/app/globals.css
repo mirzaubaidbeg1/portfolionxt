@@ -100,10 +100,24 @@ button {
 .footer-logo {
   display: grid;
   place-items: center;
-  color: var(--accent);
-  font-size: 23px;
-  font-weight: 700;
-  letter-spacing: -0.08em;
+  flex: none;
+}
+
+.nav-logo-image,
+.footer-logo-image {
+  display: block;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.nav-logo-image {
+  width: 36px;
+  height: 36px;
+}
+
+.footer-logo-image {
+  width: 42px;
+  height: 42px;
 }
 
 .nav-links {
@@ -719,13 +733,7 @@ button {
   font-size: 11px;
 }
 
-.footer-logo {
-  font-size: 27px;
-}
 
-.footer-logo span {
-  color: white;
-}
 
 .footer p {
   margin: 0;
@@ -795,8 +803,8 @@ button {
   }
 
   .hero {
-    padding-top: 145px;
-    padding-bottom: 75px;
+    padding-top: clamp(112px, 19svh, 145px);
+    padding-bottom: 65px;
   }
 
   .hero-title {
@@ -856,10 +864,16 @@ button {
   .project-card {
     flex: none;
     width: 100%;
+    max-width: 640px;
   }
 
   .project-art {
-    height: clamp(240px, 64vw, 420px);
+    height: clamp(220px, calc(75vw - 30px), 420px);
+  }
+
+  .project-image {
+    object-fit: contain;
+    background: #0d0e10;
   }
 
   .horizontal-hint {
@@ -898,28 +912,113 @@ button {
 
 @media (max-width: 480px) {
   .nav-logo {
+    gap: 8px;
     font-size: 12px;
   }
 
+  .nav-logo-image {
+    width: 32px;
+    height: 32px;
+  }
+
   .hero-title {
-    font-size: clamp(55px, 13.3vw, 72px);
+    font-size: clamp(44px, 12.5vw, 60px);
+    letter-spacing: -0.08em;
+  }
+
+  .hero-title-line {
+    white-space: nowrap;
+  }
+
+  .hero-title-mask {
+    padding-right: 0.12em;
   }
 
   .hero-eyebrow {
+    gap: 8px;
     font-size: 9px;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.12em;
+  }
+
+  .hero-description {
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  .pill-link {
+    max-width: 100%;
+    min-height: 48px;
+    padding-inline: 18px;
+    gap: 12px;
+    white-space: normal;
   }
 
   .project-meta {
-    gap: 12px;
+    gap: 10px;
+    padding-top: 16px;
   }
 
   .project-meta h3 {
-    font-size: 27px;
+    font-size: clamp(24px, 7vw, 31px);
+  }
+
+  .project-description {
+    max-width: 34ch;
+    font-size: 13px;
+  }
+
+  .art-number {
+    top: 14px;
+    left: 14px;
+  }
+
+  .art-label {
+    right: 14px;
+    bottom: 14px;
+    max-width: 60%;
+    line-height: 1.5;
+    text-align: right;
+  }
+
+  .about-heading {
+    font-size: clamp(36px, 9vw, 54px);
+    line-height: 1.15;
+  }
+
+  .section-title {
+    font-size: clamp(34px, 9.5vw, 54px);
+    line-height: 1.08;
+  }
+
+  .contact-title {
+    font-size: clamp(42px, 11vw, 58px);
+    line-height: 1.05;
   }
 
   .footer {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 10px;
+    padding: 18px 20px;
+    text-align: center;
+  }
+
+  .footer-logo {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .footer-top {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .footer p {
+    grid-column: 1 / -1;
+    grid-row: 2;
   }
 }
 
@@ -937,5 +1036,37 @@ button {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media (min-width: 900px) and (prefers-reduced-motion: reduce) {
+  .projects-section {
+    min-height: 0;
+    display: block;
+    overflow: visible;
+    padding-top: 60px;
+    padding-bottom: 80px;
+  }
+
+  .projects-track {
+    width: min(90%, 1320px);
+    flex-direction: column;
+    gap: 32px;
+    margin-inline: auto;
+    padding-inline: 0;
+    transform: none !important;
+  }
+
+  .project-card {
+    flex: none;
+    width: 100%;
+  }
+
+  .project-art {
+    height: clamp(240px, 34vw, 420px);
+  }
+
+  .horizontal-hint {
+    display: none;
   }
 }
