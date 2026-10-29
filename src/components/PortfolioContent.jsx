@@ -10,8 +10,6 @@ import {
   ArrowDown,
   ArrowUpRight,
   Code2,
-  Instagram,
-  Linkedin,
   Mail,
   MessageCircle,
   Palette,
@@ -20,6 +18,47 @@ import {
 import CrystalField from "@/components/CrystalField";
 
 gsap.registerPlugin(ScrollTrigger);
+
+function InstagramMark({ size = 17 }) {
+  return (
+    <svg
+      aria-hidden="true"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="18" cy="6" r="0.75" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function LinkedInMark({ size = 17 }) {
+  return (
+    <svg
+      aria-hidden="true"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <path d="M7.5 10.5v6" />
+      <circle cx="7.5" cy="7.5" r="0.75" fill="currentColor" />
+      <path d="M11.5 16.5v-6h2.8v1.2c.5-.9 1.2-1.4 2.4-1.4 1.8 0 2.8 1.1 2.8 3.3v2.9" />
+    </svg>
+  );
+}
 
 
 const projects = [
@@ -413,7 +452,7 @@ export default function PortfolioContent() {
               aria-label="Instagram"
               title="Instagram"
             >
-              <Instagram size={17} strokeWidth={1.7} />
+              <InstagramMark size={17} />
             </a>
             <a
               href="https://wa.me/918948503809"
@@ -431,7 +470,7 @@ export default function PortfolioContent() {
               aria-label="LinkedIn"
               title="LinkedIn"
             >
-              <Linkedin size={17} strokeWidth={1.7} />
+              <LinkedInMark size={17} />
             </a>
             <a
               href="mailto:begmirzaubaid1@gmail.com"
