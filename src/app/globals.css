@@ -236,13 +236,13 @@ button {
 /* ---------- Hero ---------- */
 
 .hero {
-  min-height: 100svh;
+  min-height: 80svh;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding-top: 145px;
-  padding-bottom: 80px;
+  padding-bottom: 40px;
 }
 
 .hero-glow {
@@ -263,7 +263,7 @@ button {
 }
 
 .hero-eyebrow {
-  margin: 0 0 30px;
+  margin: 0 0 20px;
 }
 
 .hero-title {
@@ -291,12 +291,12 @@ button {
 }
 
 .hero-bottom {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 30px;
-  margin-top: 45px;
-  padding-top: 25px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
+  gap: 14px;
+  margin-top: 32px;
+  padding-top: 18px;
   border-top: 1px solid var(--line);
 }
 
@@ -334,41 +334,16 @@ button {
   border-color: var(--accent);
 }
 
-.hero-scroll {
-  width: fit-content;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 60px;
-  color: #858791;
-  font-size: 10px;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.hero-scroll svg {
-  color: var(--accent);
-}
-
-.hero-index {
-  position: absolute;
-  right: 0;
-  bottom: 28px;
-  color: #555761;
-  font-size: 10px;
-  letter-spacing: 0.16em;
-}
-
 /* ---------- About ---------- */
 
 .about {
-  padding-top: 145px;
-  padding-bottom: 165px;
+  padding-top: 40px;
+  padding-bottom: 60px;
 }
 
 .about-heading {
   max-width: 1120px;
-  margin: 45px 0 65px;
+  margin: 30px 0 42px;
   font-size: clamp(38px, 6.5vw, 88px);
   line-height: 1.13;
   letter-spacing: -0.065em;
@@ -376,6 +351,7 @@ button {
 }
 
 .about-heading span,
+.education-heading span,
 .section-title span,
 .contact-title span {
   color: #696b75;
@@ -383,10 +359,40 @@ button {
 
 .about-bottom {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 50px;
-  padding-top: 28px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  padding-top: 20px;
   border-top: 1px solid var(--line);
+}
+
+.education-block {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  margin-top: 40px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+
+.education-block .eyebrow {
+  margin: 0 0 10px;
+}
+
+.education-heading {
+  max-width: 550px;
+  margin: 0;
+  font-size: clamp(25px, 3.8vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -0.06em;
+  font-weight: 400;
+}
+
+.education-description {
+  max-width: 620px;
+  margin: 0 0 2px;
+  color: #a2a3ab;
+  font-size: 14px;
+  line-height: 1.9;
 }
 
 .about-bottom > p {
@@ -399,27 +405,29 @@ button {
 
 .about-tags {
   display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
   gap: 10px;
 }
 
 .about-tags span {
-  padding: 12px 15px;
+  padding: 10px 14px;
   border: 1px solid var(--line);
   border-radius: 100px;
   color: #b5b6bd;
-  font-size: 11px;
+  font-size: 10px;
+  white-space: nowrap;
 }
 
 /* ---------- Projects (horizontal scroll, cards centered) ---------- */
 
 .projects-section {
   width: 100%;
-  padding-top: 60px;
-  padding-bottom: 40px;
+  padding-top: 40px;
+  padding-bottom: 25px;
   overflow: hidden;
-  /* Desktop: fill one screen so the pinned section is vertically centered */
+  /* The full-height pin keeps the horizontal gallery centered while scrolling. */
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -427,7 +435,7 @@ button {
 }
 
 .projects-intro {
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 
 .section-title {
@@ -656,7 +664,7 @@ button {
 /* ---------- Skills ---------- */
 
 .skills {
-  padding-top: 140px;
+  padding-top: 60px;
   padding-bottom: 160px;
 }
 
@@ -857,8 +865,9 @@ button {
   }
 
   .hero {
+    min-height: 80svh;
     padding-top: clamp(112px, 19svh, 145px);
-    padding-bottom: 65px;
+    padding-bottom: 32px;
   }
 
   .hero-title {
@@ -866,41 +875,51 @@ button {
   }
 
   .hero-bottom {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 18px;
-    margin-top: 30px;
+    gap: 12px;
+    margin-top: 24px;
   }
 
   .hero-description {
     max-width: 500px;
   }
 
-  .hero-scroll {
-    margin-top: 35px;
-  }
-
-  .hero-index {
-    display: none;
-  }
-
   .about {
-    padding-top: 72px;
-    padding-bottom: 78px;
+    padding-top: 28px;
+    padding-bottom: 44px;
   }
 
   .about-heading {
-    margin: 30px 0 40px;
+    margin: 18px 0 24px;
   }
 
   .about-bottom {
-    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
-    gap: 12px;
+    gap: 14px;
   }
 
   .about-bottom > p {
-    font-size: 11px;
-    line-height: 1.65;
+    font-size: 12px;
+    line-height: 1.75;
+  }
+
+  .education-block {
+    gap: 14px;
+    margin-top: 24px;
+    padding-top: 16px;
+  }
+
+  .education-block .eyebrow {
+    margin-bottom: 8px;
+  }
+
+  .education-heading {
+    max-width: 25ch;
+    font-size: clamp(22px, 6vw, 32px);
+    line-height: 1.15;
+  }
+
+  .education-description {
+    font-size: 12px;
+    line-height: 1.75;
   }
 
   .about-tags {
@@ -918,7 +937,7 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: clamp(82px, 18svh, 110px) 0 24px;
+    padding: clamp(60px, 12svh, 80px) 0 16px;
     overflow: hidden;
   }
 
@@ -950,7 +969,6 @@ button {
   }
 
   .horizontal-hint {
-    display: block;
     width: 82vw;
     margin: 12px auto 0;
     font-size: 9px;
@@ -958,7 +976,7 @@ button {
   }
 
   .skills {
-    padding-top: 72px;
+    padding-top: 36px;
     padding-bottom: 78px;
   }
 

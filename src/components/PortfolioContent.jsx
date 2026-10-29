@@ -7,7 +7,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import {
-  ArrowDown,
   ArrowUpRight,
   Code2,
   Mail,
@@ -314,12 +313,6 @@ export default function PortfolioContent() {
             </a>
           </div>
 
-          <a href="#about" className="hero-scroll">
-            <span>Scroll to discover</span>
-            <ArrowDown size={15} />
-          </a>
-
-          <span className="hero-index">PORTFOLIO / 2026</span>
         </section>
 
         {/* ABOUT */}
@@ -345,6 +338,22 @@ export default function PortfolioContent() {
               <span>Interaction</span>
               <span>Experimentation</span>
             </div>
+          </div>
+
+          <div className="education-block reveal">
+            <div>
+              <p className="eyebrow"> — Education</p>
+              <h3 className="education-heading">
+                Building a foundation in
+                <span> AI &amp; Data Science.</span>
+              </h3>
+            </div>
+            <p className="education-description">
+              I’m currently pursuing a B.Voc. in Artificial Intelligence &amp;
+              Data Science (AI&amp;DS) at Nexcore Institute of Technology
+              (NIT). I’ve also completed ADCA and CCC, and studied the first
+              semester of the O Level program.
+            </p>
           </div>
         </section>
 
