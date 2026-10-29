@@ -733,7 +733,32 @@ button {
   font-size: 11px;
 }
 
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
 
+.footer-socials a {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: #a2a3ab;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.footer-socials a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
 
 .footer p {
   margin: 0;
@@ -831,8 +856,8 @@ button {
   }
 
   .about {
-    padding-top: 100px;
-    padding-bottom: 110px;
+    padding-top: 72px;
+    padding-bottom: 78px;
   }
 
   .about-heading {
@@ -840,35 +865,54 @@ button {
   }
 
   .about-bottom {
-    grid-template-columns: 1fr;
-    gap: 25px;
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    gap: 12px;
   }
 
-  /* Projects: stack vertically, no pin, no transform */
+  .about-bottom > p {
+    font-size: 11px;
+    line-height: 1.65;
+  }
+
+  .about-tags {
+    gap: 6px;
+  }
+
+  .about-tags span {
+    padding: 7px 8px;
+    font-size: 8px;
+  }
+
+  /* Keep the desktop project gallery, scaled to the phone viewport. */
   .projects-section {
-    min-height: 0;
-    display: block;
-    padding-top: 45px;
-    padding-bottom: 60px;
-    overflow: visible;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(82px, 18svh, 110px) 0 24px;
+    overflow: hidden;
+  }
+
+  .projects-intro {
+    width: 82vw;
+    margin: 0 auto 14px;
   }
 
   .projects-track {
-    width: 100%;
-    flex-direction: column;
-    gap: 22px;
-    padding-inline: 20px;
-    transform: none !important;
+    width: max-content;
+    flex-direction: row;
+    gap: 5vw;
+    padding-inline: 9vw;
   }
 
   .project-card {
-    flex: none;
-    width: 100%;
-    max-width: 640px;
+    flex: 0 0 82vw;
+    width: 82vw;
+    max-width: none;
   }
 
   .project-art {
-    height: clamp(220px, calc(75vw - 30px), 420px);
+    height: clamp(150px, 54vw, 250px);
   }
 
   .project-image {
@@ -877,36 +921,56 @@ button {
   }
 
   .horizontal-hint {
-    display: none;
+    display: block;
+    width: 82vw;
+    margin: 12px auto 0;
+    font-size: 9px;
+    text-align: right;
   }
 
   .skills {
-    padding-top: 100px;
-    padding-bottom: 110px;
+    padding-top: 72px;
+    padding-bottom: 78px;
   }
 
   .skills-grid {
-    grid-template-columns: 1fr;
-    margin-top: 30px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 24px;
   }
 
-  .skill-card,
+  .skill-card {
+    padding: 16px 8px;
+  }
+
   .skill-card + .skill-card {
-    padding: 24px 0;
-    border-left: 0;
+    padding-left: 8px;
+    border-left: 1px solid var(--line);
+  }
+
+  .skill-card-top > span {
+    font-size: 9px;
+  }
+
+  .skill-card-top > svg {
+    width: 16px;
+    height: 16px;
   }
 
   .skill-card h3 {
-    margin-top: 35px;
+    margin-top: 18px;
+    font-size: clamp(11px, 3.2vw, 14px);
+    line-height: 1.25;
   }
 
   .skill-card p {
     min-height: 0;
+    font-size: 9px;
+    line-height: 1.5;
   }
 
   .contact {
-    padding-top: 85px;
-    padding-bottom: 100px;
+    padding-top: 72px;
+    padding-bottom: 78px;
   }
 }
 
@@ -955,54 +1019,62 @@ button {
 
   .project-meta {
     gap: 10px;
-    padding-top: 16px;
+    padding-top: 14px;
   }
 
   .project-meta h3 {
-    font-size: clamp(24px, 7vw, 31px);
+    font-size: clamp(20px, 6vw, 26px);
+  }
+
+  .project-category,
+  .project-year {
+    font-size: 9px;
   }
 
   .project-description {
     max-width: 34ch;
-    font-size: 13px;
+    font-size: 11px;
   }
 
   .art-number {
-    top: 14px;
-    left: 14px;
+    top: 12px;
+    left: 12px;
   }
 
   .art-label {
-    right: 14px;
-    bottom: 14px;
+    right: 12px;
+    bottom: 12px;
     max-width: 60%;
     line-height: 1.5;
     text-align: right;
+    font-size: 8px;
   }
 
   .about-heading {
-    font-size: clamp(36px, 9vw, 54px);
+    font-size: clamp(34px, 9vw, 50px);
     line-height: 1.15;
   }
 
   .section-title {
-    font-size: clamp(34px, 9.5vw, 54px);
+    font-size: clamp(28px, 8.5vw, 42px);
     line-height: 1.08;
   }
 
+  .projects-caption {
+    font-size: 11px;
+  }
+
   .contact-title {
-    font-size: clamp(42px, 11vw, 58px);
+    font-size: clamp(38px, 10vw, 54px);
     line-height: 1.05;
   }
 
   .footer {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
-    column-gap: 12px;
-    row-gap: 10px;
-    padding: 18px 20px;
-    text-align: center;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 14px 12px;
+    font-size: 9px;
   }
 
   .footer-logo {
@@ -1010,15 +1082,35 @@ button {
     grid-row: 1;
   }
 
-  .footer-top {
+  .footer-logo-image {
+    width: 32px;
+    height: 32px;
+  }
+
+  .footer-socials {
     grid-column: 2;
     grid-row: 1;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .footer-socials a {
+    width: 32px;
+    height: 32px;
+  }
+
+  .footer-top {
+    grid-column: 3;
+    grid-row: 1;
     justify-self: end;
+    font-size: 9px;
+    white-space: nowrap;
   }
 
   .footer p {
     grid-column: 1 / -1;
     grid-row: 2;
+    font-size: 9px;
   }
 }
 
@@ -1068,5 +1160,31 @@ button {
 
   .horizontal-hint {
     display: none;
+  }
+}
+@media (max-width: 899px) and (prefers-reduced-motion: reduce) {
+  .projects-section {
+    min-height: 0;
+    display: block;
+    overflow: visible;
+    padding: 82px 0 30px;
+  }
+
+  .projects-track {
+    width: 100%;
+    gap: 5vw;
+    overflow-x: auto;
+    padding-inline: 9vw;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .projects-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .project-card {
+    scroll-snap-align: center;
   }
 }

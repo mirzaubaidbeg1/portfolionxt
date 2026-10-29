@@ -10,6 +10,10 @@ import {
   ArrowDown,
   ArrowUpRight,
   Code2,
+  Instagram,
+  Linkedin,
+  Mail,
+  MessageCircle,
   Palette,
   Sparkles,
 } from "lucide-react";
@@ -149,82 +153,59 @@ export default function PortfolioContent() {
 
       const media = gsap.matchMedia();
 
-     
+      const createProjectScroll = (isMobile) => {
+        const section = root.querySelector("#projects");
+        const track = root.querySelector(".projects-track");
+        const cards = gsap.utils.toArray(".project-card", track);
 
-media.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)", () => {
-  const section = root.querySelector("#projects");
-  const track = root.querySelector(".projects-track");
-  const cards = gsap.utils.toArray(".project-card", track);
+        if (!section || !track || cards.length === 0) return;
 
-  if (!section || !track || cards.length === 0) return;
+        const getCenterX = (card) => {
+          const trackRect = track.getBoundingClientRect();
+          const cardRect = card.getBoundingClientRect();
 
-  const getCenterX = (card) => {
-    const trackRect = track.getBoundingClientRect();
-    const cardRect = card.getBoundingClientRect();
+          return (
+            window.innerWidth / 2 -
+            (cardRect.left - trackRect.left + cardRect.width / 2)
+          );
+        };
 
-    // Card center ko viewport center par lane wali distance
-    return (
-      window.innerWidth / 2 -
-      (cardRect.left - trackRect.left + cardRect.width / 2)
-    );
-  };
+        const getFirstX = () => getCenterX(cards[0]);
+        const getLastX = () => getCenterX(cards[cards.length - 1]);
+        const horizontalDistance = () =>
+          Math.abs(getLastX() - getFirstX());
 
-  const getFirstX = () => getCenterX(cards[0]);
-  const getLastX = () => getCenterX(cards[cards.length - 1]);
+        gsap.fromTo(
+          track,
+          { x: () => getFirstX() },
+          {
+            x: () => getLastX(),
+            ease: "none",
+            scrollTrigger: {
+              trigger: isMobile ? section : track,
+              start: isMobile ? "top top" : "center center",
+              end: () => "+=" + Math.max(horizontalDistance(), 1),
+              pin: section,
+              scrub: isMobile ? 0.7 : 1,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
+          }
+        );
 
-  const horizontalDistance = () =>
-    Math.abs(getLastX() - getFirstX());
+        return () => {
+          gsap.set(track, { clearProps: "transform" });
+        };
+      };
 
-  gsap.fromTo(
-    track,
-    { x: () => getFirstX() },
-    {
-      x: () => getLastX(),
-      ease: "none",
-      scrollTrigger: {
-        trigger: track,
-        start: "center center",
-        end: () => `+=${Math.max(horizontalDistance(), 1)}`,
-        pin: section,
-        scrub: 1,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-      },
-    }
-  );
-
-  return () => {
-    gsap.set(track, { clearProps: "transform" });
-  };
-});
-
-
-
-      media.add("(max-width: 899px)", () => {
-        gsap.set(root.querySelector(".projects-track"), {
-          clearProps: "transform",
-        });
-      });
+      media.add(
+        "(min-width: 900px) and (prefers-reduced-motion: no-preference)",
+        () => createProjectScroll(false)
+      );
 
       media.add(
         "(max-width: 899px) and (prefers-reduced-motion: no-preference)",
-        () => {
-          const cards = gsap.utils.toArray(".project-card", root);
-
-          cards.forEach((card) => {
-            gsap.from(card, {
-              y: 22,
-              opacity: 0,
-              duration: 0.65,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 90%",
-                once: true,
-              },
-            });
-          });
-        }
+        () => createProjectScroll(true)
       );
 
       return () => media.revert();
@@ -424,6 +405,42 @@ media.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)", () =
             />
           </a>
           <p>© 2026 Mirza Ubaid Beg</p>
+          <nav className="footer-socials" aria-label="Social media and contact">
+            <a
+              href="https://www.instagram.com/mirza_ubaid_beg_/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              title="Instagram"
+            >
+              <Instagram size={17} strokeWidth={1.7} />
+            </a>
+            <a
+              href="https://wa.me/918948503809"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="WhatsApp"
+              title="WhatsApp"
+            >
+              <MessageCircle size={17} strokeWidth={1.7} />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/mirza-ubaid-beg-a08b6343b/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="LinkedIn"
+              title="LinkedIn"
+            >
+              <Linkedin size={17} strokeWidth={1.7} />
+            </a>
+            <a
+              href="mailto:begmirzaubaid1@gmail.com"
+              aria-label="Email contact"
+              title="Email"
+            >
+              <Mail size={17} strokeWidth={1.7} />
+            </a>
+          </nav>
           <a href="#home" className="footer-top">
             Back to top ↑
           </a>
